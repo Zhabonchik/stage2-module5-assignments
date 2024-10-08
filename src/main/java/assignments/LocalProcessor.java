@@ -39,11 +39,10 @@ public class LocalProcessor {
     @ListIteratorAnnotation
     public void listIterator(List<String> stringList) {
         stringArrayList = new LinkedList<>(stringList);
-        for (int i = 0; i < period; i++) {
-            try {
+        for (int i = 0; i < period && i < stringArrayList.size(); i++) {
+            String str = stringArrayList.get(i);
+            if (str != null) {
                 System.out.println(stringArrayList.get(i).hashCode());
-            } catch (NullPointerException ignored) {
-
             }
         }
     }
@@ -60,11 +59,16 @@ public class LocalProcessor {
 
     @ReadFullProcessorNameAnnotation
     public void readFullProcessorName(File file) throws FileNotFoundException {
-            informationScanner = new Scanner(file);
-            StringBuilder stringBuilder = new StringBuilder(processorVersion);
-            while (informationScanner.hasNext()) {
-                stringBuilder.append(informationScanner.nextLine());
+            try{
+                informationScanner = new Scanner(file);
+                StringBuilder stringBuilder = new StringBuilder(processorVersion);
+                while (informationScanner.hasNext()) {
+                    stringBuilder.append(informationScanner.nextLine());
+                }
+                processorName = stringBuilder.toString();
+            } catch (FileNotFoundException ignore) {
+
             }
-            processorName = stringBuilder.toString();
+
     }
 }
